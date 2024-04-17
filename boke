@@ -1,0 +1,25 @@
+# 略語展開機能を提供する関数
+function expand_abbreviations() {
+    local abbreviated_command="$1"
+    shift
+    local expanded_command="${abbreviations[$abbreviated_command]}"
+    
+    if [ -n "$expanded_command" ]; then
+        eval "$expanded_command $@"
+    else
+        eval "$abbreviated_command $@"
+    fi
+}
+
+# 略語と展開後のコマンドのマッピングを定義
+declare -A abbreviations
+abbreviations=(
+    ["gp"]="git push"
+    ["gc"]="git commit -m"
+    ["gs"]="git status"
+)
+
+# 各コマンドについて、展開関数をエイリアスとして設定
+for cmd in "${!abbreviations[@]}"; do
+    alias "$cmd=expand_abbreviations $cmd"
+done
