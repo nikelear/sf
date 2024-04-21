@@ -32,3 +32,4 @@ prompt_git() {
 
 # PS1 はプロンプトの表示形式を定義する変数
 export PS1="\$(prompt_git)\$ "
+
